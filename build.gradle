@@ -1,0 +1,46 @@
+plugins {
+    id 'org.jetbrains.intellij' version '1.4.0'
+    id 'java'
+}
+
+group 'org.example'
+version '0.1'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+}
+
+// See https://github.com/JetBrains/gradle-intellij-plugin/
+intellij {
+    version = '2021.3.2'
+    type = 'IU'
+    plugins = ['DatabaseTools', 'uml']
+}
+
+signPlugin {
+    privateKey = System.getenv("PRIVATE_KEY") == null ? null : new File(System.getenv("PRIVATE_KEY")).getText('UTF-8')
+    password = System.getenv("PRIVATE_KEY_PASSWORD")
+    certificateChain = System.getenv("CERTIFICATE_CHAIN") == null ? null : new File(System.getenv("CERTIFICATE_CHAIN")).getText('UTF-8')
+}
+
+publishPlugin {
+    token = System.getenv("PUBLISH_TOKEN")
+}
+
+patchPluginXml {
+    changeNotes = """
+      Add change notes here.<br>
+      <em>most HTML tags may be used</em>"""
+}
+
+test {
+    useJUnitPlatform()
+}
