@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'org.example'
-version '0.1'
+version '0.4'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -25,6 +25,11 @@ intellij {
     plugins = ['DatabaseTools', 'uml']
 }
 
+patchPluginXml {
+    sinceBuild = '212'
+    untilBuild = '222.*'
+}
+
 signPlugin {
     privateKey = System.getenv("PRIVATE_KEY") == null ? null : new File(System.getenv("PRIVATE_KEY")).getText('UTF-8')
     password = System.getenv("PRIVATE_KEY_PASSWORD")
@@ -33,12 +38,6 @@ signPlugin {
 
 publishPlugin {
     token = System.getenv("PUBLISH_TOKEN")
-}
-
-patchPluginXml {
-    changeNotes = """
-      Add change notes here.<br>
-      <em>most HTML tags may be used</em>"""
 }
 
 test {
