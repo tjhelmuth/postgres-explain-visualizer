@@ -9,7 +9,10 @@ import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.fileEditor.FileEditor;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.tjhelmuth.file.PgPlanVirtualFile;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Arrays;
 
 public class ExplainVisualizerAction extends ExplainActionBase.Ui {
     private ExplainPlanProvider planProvider = new PlanProvider();
@@ -38,8 +41,9 @@ public class ExplainVisualizerAction extends ExplainActionBase.Ui {
             if(model instanceof PgPlanModel){
                 ApplicationManager.getApplication().invokeLater(() -> {
                     PgPlanModel mdl = (PgPlanModel) model;
-                    PgPlanVirtualFile file = new PgPlanVirtualFile("test", mdl.getJson());
+                    PgPlanVirtualFile file = new PgPlanVirtualFile(getFileName(statement), mdl.getJson());
                     FileEditor[] editors = FileEditorManager.getInstance(console.getProject()).openFile(file, true);
+                    System.out.println(Arrays.toString(editors));
                 });
             }
         }, console.getDataSource(), statement, this.myRun);
@@ -47,5 +51,9 @@ public class ExplainVisualizerAction extends ExplainActionBase.Ui {
         if (request != null) {
             console.getMessageBus().getDataProducer().processRequest(request);
         }
+    }
+
+    private String getFileName(String statement){
+        return String.format("Explain: %s", StringUtils.substring(statement, 0, 6));
     }
 }

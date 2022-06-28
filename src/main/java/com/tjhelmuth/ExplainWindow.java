@@ -56,7 +56,7 @@ public class ExplainWindow {
 
                 String injectCss = String.format("document.head.insertAdjacentHTML( 'beforeend', \"%s\" );", cssCode);
                 System.out.println(injectCss);
-                cefBrowser.executeJavaScript(injectCss, browser.getCefBrowser().getURL(), 0);
+//                cefBrowser.executeJavaScript(injectCss, browser.getCefBrowser().getURL(), 0);
 
                 System.out.println("EDITOR BG: " + editorBackground);
                 System.out.println("EDITOR FG: " + editorForeground);
