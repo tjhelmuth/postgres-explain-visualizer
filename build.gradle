@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'org.example'
-version '0.4'
+version '0.6'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -22,12 +22,12 @@ dependencies {
 intellij {
     version = '2021.3.2'
     type = 'IU'
-    plugins = ['DatabaseTools', 'uml']
+    plugins = ['com.intellij.database', 'uml']
 }
 
 patchPluginXml {
     sinceBuild = '212'
-    untilBuild = '222.*'
+    untilBuild = '221.*'
 }
 
 signPlugin {

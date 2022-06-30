@@ -8,6 +8,12 @@
     <description><![CDATA[<h2>Postgres query plan visualizer</h2>
     <p>More in depth and easy to use than the included UML diagram in the database plugin.</p>
     <p>Based on vue js component from https://github.com/dalibo/pev2</p>
+
+    <h3>Usage</h3>
+    <ol>
+        <li>Write a postgres query in a query console for a PostgreSQL datasource</li>
+        <li>Right click the selected query, and in the context menu choose "Visualize Explain/Analyze"</li>
+    </ol>
     ]]></description>
 
     <change-notes>
