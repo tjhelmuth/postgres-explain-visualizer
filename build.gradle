@@ -1,10 +1,10 @@
 plugins {
-    id 'org.jetbrains.intellij' version '1.4.0'
+    id 'org.jetbrains.intellij' version '1.8.1'
     id 'java'
 }
 
 group 'org.example'
-version '0.6'
+version '0.8'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -20,20 +20,31 @@ dependencies {
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
-    version = '2021.3.2'
+    updateSinceUntilBuild = false
+
+    version = '2022.2'
     type = 'IU'
     plugins = ['com.intellij.database', 'uml']
 }
 
 patchPluginXml {
-    sinceBuild = '212'
-    untilBuild = '221.*'
+
 }
 
 signPlugin {
     privateKey = System.getenv("PRIVATE_KEY") == null ? null : new File(System.getenv("PRIVATE_KEY")).getText('UTF-8')
     password = System.getenv("PRIVATE_KEY_PASSWORD")
     certificateChain = System.getenv("CERTIFICATE_CHAIN") == null ? null : new File(System.getenv("CERTIFICATE_CHAIN")).getText('UTF-8')
+}
+
+runPluginVerifier {
+    ideVersions = [
+//            "DG-2021.1",
+            "DG-2021.2",
+            "DG-2021.3",
+            "DG-2022.1",
+            "DG-2022.2.2",
+    ]
 }
 
 publishPlugin {

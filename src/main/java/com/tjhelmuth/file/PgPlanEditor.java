@@ -34,7 +34,7 @@ public class PgPlanEditor extends UserDataHolderBase implements FileEditor {
         PgPlanVirtualFile planFile = (PgPlanVirtualFile) file;
 
         ExplainWindowService service = project.getService(ExplainWindowService.class);
-        ExplainWindow window = service.createWindow(planFile.getContent().toString());
+        ExplainWindow window = service.createWindow(planFile.getContent().toString(), planFile);
         this.component = window.getContent();
         return this.component;
     }

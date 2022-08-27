@@ -16,6 +16,6 @@ public class PlanModelBuilder extends PgPlanModelBuilder {
 
     @Override
     public @NotNull PlanModel build(@NotNull PgRawPlanData data) {
-        return new PgPlanModel(this.getRootNode(), this.myActual, this.unsupportedFeatures, data.json);
+        return new PgPlanModel(this.getRootNode(), this.myActual, unsupportedFeatures, data.json);
     }
 }

@@ -15,7 +15,15 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 public class PgPlanVirtualFile extends LightVirtualFile {
-    public PgPlanVirtualFile(@NlsSafe @NotNull String name, @NotNull String planText) {
+    //did we actually run the query with analyze
+    private final boolean executed;
+
+    public PgPlanVirtualFile(@NlsSafe @NotNull String name, @NotNull String planText, boolean executed) {
         super(name, PgPlanFileType.INSTANCE, planText);
+        this.executed = executed;
+    }
+
+    public boolean isExecuted() {
+        return executed;
     }
 }

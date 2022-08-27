@@ -3,7 +3,7 @@
     <name>Postgres Explain Visualizer</name>
     <vendor email="tjhelmuth@gmail.com" url="https://github.com/tjhelmuth">Tyler Helmuth</vendor>
 
-    <idea-version since-build="212" until-build="222.*"/>
+    <idea-version since-build="212"/>
 
     <description><![CDATA[<h2>Postgres query plan visualizer</h2>
     <p>More in depth and easy to use than the included UML diagram in the database plugin.</p>
@@ -43,9 +43,16 @@
 
     <actions>
         <!-- Add your actions here -->
+        <action id="com.tjhelmuth.ExplainAnalyzeVisualizerAction" class="com.tjhelmuth.ExplainAnalyzeVisualizerAction"
+                text="Visualize Explain + Analyze"
+                description="Visualize postgres explain + analyze plan for selected query. Executes query to determine runtimes."
+                icon="AllIcons.FileTypes.Diagram">
+            <add-to-group group-id="Console.Jdbc.RunContextGroup" anchor="last"/>
+        </action>
+
         <action id="com.tjhelmuth.ExplainVisualizerAction" class="com.tjhelmuth.ExplainVisualizerAction"
-                text="Visualize Explain/Analyze"
-                description="Visualize postgres explain analyze plan for selected query"
+                text="Visualize Explain"
+                description="Visualize postgres explain plan for given query. Does not execute query."
                 icon="AllIcons.FileTypes.Diagram">
             <add-to-group group-id="Console.Jdbc.RunContextGroup" anchor="last"/>
         </action>

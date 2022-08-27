@@ -2,6 +2,7 @@ package com.tjhelmuth;
 
 import com.intellij.database.dataSource.DatabaseConnectionCore;
 import com.intellij.database.dataSource.connection.statements.ReusableSmartStatement;
+import com.intellij.database.dialects.base.plan.RawPlanData;
 import com.intellij.database.dialects.postgres.plan.PgRawPlanData;
 import com.intellij.database.plan.PlanRetrievalException;
 import org.jetbrains.annotations.NotNull;
@@ -13,7 +14,7 @@ public class PlanData extends PgRawPlanData {
     public void load(@NotNull DatabaseConnectionCore connection, @NotNull String statement, boolean run) {
         this.json = null;
         //analyze, verbose, costs, buffers, format json
-        this.useStatementWithPreserved(connection, (ResourceUser<ReusableSmartStatement<String>>) s ->
+        useStatementWithPreserved(connection, (ResourceUser<ReusableSmartStatement<String>>) s ->
                 s.noisy().execute("EXPLAIN (FORMAT JSON, VERBOSE, COSTS, BUFFERS" + (run ? ", ANALYSE" : "") + ") " + statement,
         PgRawPlanData.processing((rs) -> {
             if (!rs.next()) {
