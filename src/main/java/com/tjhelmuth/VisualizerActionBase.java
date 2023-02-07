@@ -37,6 +37,9 @@ public abstract class VisualizerActionBase extends ExplainActionBase.Ui {
 
         DataRequest.RawRequest request = planProvider.createExplainRequest(console, (model) -> {
             if(model instanceof PgPlanModel){
+
+                //TODO: check here if we have an editor for this plan open already, if so, just update it
+
                 ApplicationManager.getApplication().invokeLater(() -> {
                     PgPlanModel mdl = (PgPlanModel) model;
                     PgPlanVirtualFile file = new PgPlanVirtualFile(getFileName(statement), mdl.getJson(), myRun);

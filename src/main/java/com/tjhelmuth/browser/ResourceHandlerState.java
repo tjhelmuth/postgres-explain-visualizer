@@ -7,7 +7,7 @@ import org.cef.network.CefResponse;
 
 import java.io.IOException;
 
-interface ResourceHandlerState {
+public interface ResourceHandlerState {
     void getResponseHeaders(CefResponse response, IntRef responseLength, StringRef redirectUrl);
 
     boolean readResponse(byte[] dataOut, int designedBytesToRead, IntRef bytesRead, CefCallback callback);
