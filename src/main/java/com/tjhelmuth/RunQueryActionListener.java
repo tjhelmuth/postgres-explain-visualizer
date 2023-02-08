@@ -1,6 +1,6 @@
 package com.tjhelmuth;
 
-import com.intellij.database.actions.RunQueryAction;
+import com.intellij.database.actions.ExplainActionBase;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.AnActionResult;
@@ -13,8 +13,7 @@ public class RunQueryActionListener implements AnActionListener {
 
     @Override
     public void afterActionPerformed(@NotNull AnAction action, @NotNull AnActionEvent event, @NotNull AnActionResult result) {
-        if(action instanceof RunQueryAction){
-            RunQueryAction queryAction = (RunQueryAction) action;
+        if(action instanceof ExplainActionBase){
             log.info("Running query");
         }
 

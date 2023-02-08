@@ -1,9 +1,8 @@
 package com.tjhelmuth.browser;
 
-import com.intellij.ui.jcef.JBCefBrowser;
+import com.tjhelmuth.ExplainWindow;
 import com.tjhelmuth.browser.commands.LoadStatic;
-import com.tjhelmuth.browser.commands.RefreshPlan;
-import lombok.RequiredArgsConstructor;
+import com.tjhelmuth.browser.commands.RerunPlan;
 import lombok.extern.slf4j.Slf4j;
 import org.cef.callback.CefCallback;
 import org.cef.handler.CefResourceHandler;
@@ -13,41 +12,43 @@ import org.cef.network.CefRequest;
 import org.cef.network.CefResponse;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 
 @Slf4j
 public class LocalResourceHandler implements CefResourceHandler {
-    private final RefreshPlan refreshPlan;
+    private final ExplainWindow window;
+    private final RerunPlan refreshPlan;
     private final LoadStatic loadStatic = new LoadStatic();
 
     private ResourceHandlerState state = new ClosedConnection();
 
-    public LocalResourceHandler(JBCefBrowser browser) {
-        this.refreshPlan = new RefreshPlan(browser);
+    public LocalResourceHandler(ExplainWindow window) {
+        this.window = window;
+        this.refreshPlan = new RerunPlan(window);
     }
+
 
     @Override
     public boolean processRequest(CefRequest cefRequest, CefCallback cefCallback) {
-        log.warn("Processing request: {}", cefRequest.getURL());
+        log.info("Processing request: {}", cefRequest.getURL());
 
-        //TODO: refactor command handler to return whether continue or not...
         try {
+            boolean handled;
             if(refreshPlan.isApplicable(cefRequest)){
-                refreshPlan.execute(cefRequest);
-                cefCallback.cancel();
-                return false;
+                var result = refreshPlan.execute(cefRequest);
+                handled = result.isHandled();
+            } else {
+                var result = loadStatic.execute(cefRequest);
+                this.state = result.isHandled() ? result.getResult() : new ClosedConnection();
+
+                handled = result.isHandled();
             }
 
-            var nextState = loadStatic.execute(cefRequest);
-            this.state = nextState == null ? new ClosedConnection() : nextState;
-            if(nextState == null){
-                cefCallback.cancel();
-                return false;
-            } else {
+            if(handled){
                 cefCallback.Continue();
                 return true;
+            } else {
+                cefCallback.cancel();
+                return false;
             }
 
         } catch (IOException e){

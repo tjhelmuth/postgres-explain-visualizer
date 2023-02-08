@@ -5,6 +5,7 @@ import com.tjhelmuth.browser.ResourceHandlerState;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.Validate;
 import org.cef.network.CefRequest;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.net.URL;
@@ -21,8 +22,9 @@ public class LoadStatic implements SimpleCommandHandler<ResourceHandlerState> {
      * @param request - the request from embedded browser
      * @return - resource handler state for this resource
      */
+    @NotNull
     @Override
-    public ResourceHandlerState execute(CefRequest request) throws IOException {
+    public CommandResult<ResourceHandlerState> execute(CefRequest request) throws IOException {
         String requestUrl = request.getURL();
 
         Validate.notBlank(requestUrl, "Request URL cannot be blank");
@@ -30,15 +32,17 @@ public class LoadStatic implements SimpleCommandHandler<ResourceHandlerState> {
         String pathToResource = requestUrl.replace("http://myapp", "webview/");
         URL newUrl = getClass().getClassLoader().getResource(pathToResource);
 
-        log.warn("Loading static resource: {}", pathToResource);
+        log.info("Loading static resource: {}", pathToResource);
 
         if(newUrl == null){
-            log.warn("Unable to find resource for URL: {}", requestUrl);
-            return null;
+            log.info("Unable to find resource for URL: {}", requestUrl);
+            return CommandResult.emptyNotHandled();
         }
 
-        log.warn("Loaded: {}", newUrl.getPath());
+        log.info("Loaded: {}", newUrl.getPath());
 
-        return new OpenedConnection(newUrl.openConnection());
+        var conn = new OpenedConnection(newUrl.openConnection());;
+
+        return new CommandResult<>(conn, true);
     }
 }

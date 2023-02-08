@@ -6,8 +6,10 @@ import com.intellij.openapi.fileEditor.FileEditorState;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.UserDataHolderBase;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.tjhelmuth.ExplainContext;
 import com.tjhelmuth.ExplainWindow;
 import com.tjhelmuth.ExplainWindowService;
+import lombok.Getter;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -15,10 +17,15 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 import java.beans.PropertyChangeListener;
 
+/**
+ * This is the editor that contains our explain diagram.
+ */
 public class PgPlanEditor extends UserDataHolderBase implements FileEditor {
-    private JComponent component;
     private final Project project;
     private final VirtualFile file;
+
+    @Getter
+    private ExplainWindow explainWindow;
 
     public PgPlanEditor(Project project, VirtualFile file){
         this.project = project;
@@ -27,27 +34,26 @@ public class PgPlanEditor extends UserDataHolderBase implements FileEditor {
 
     @Override
     public @NotNull JComponent getComponent() {
-        if(this.component != null){
-            return this.component;
+        if(this.explainWindow != null){
+            return this.explainWindow.getContent();
         }
 
         PgPlanVirtualFile planFile = (PgPlanVirtualFile) file;
 
         ExplainWindowService service = project.getService(ExplainWindowService.class);
-        ExplainWindow window = service.createWindow(planFile.getContent().toString(), planFile, this);
-        this.component = window.getContent();
-        return this.component;
+        this.explainWindow = service.createWindow(planFile.getContent().toString(), new ExplainContext(planFile, this, planFile.getConsole()));
+        return explainWindow.getContent();
     }
 
     @Override
     public @Nullable JComponent getPreferredFocusedComponent() {
-        return this.component;
+        return this.getComponent();
     }
 
     @Override
     public @Nls(capitalization = Nls.Capitalization.Title)
     @NotNull String getName() {
-        return null;
+        return file.getName();
     }
 
     @Override

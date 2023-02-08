@@ -17,9 +17,9 @@
     ]]></description>
 
     <change-notes>
-        Added the ability to visualize just "explain" without running the actual query and view the query costs.
-
-        Moved compatibility to 2022.1 and above because of breaking API changes in database module.
+        * Fixed bug with just Explain (without analyze) on postgres versions &lt; 13
+        * Added button to the plan viewer to rerun plan generation from inside the tab
+        * Updated pev2 vue component to 1.7.
     </change-notes>
 
     <!-- please see https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html

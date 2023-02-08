@@ -1,29 +1,28 @@
 package com.tjhelmuth.file;
 
-import com.intellij.openapi.util.NlsSafe;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.openapi.vfs.VirtualFilePathWrapper;
-import com.intellij.openapi.vfs.VirtualFileSystem;
-import com.intellij.openapi.vfs.VirtualFileWithoutContent;
+import com.intellij.database.console.JdbcConsole;
 import com.intellij.testFramework.LightVirtualFile;
-import org.jetbrains.annotations.NonNls;
+import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.util.UUID;
 
+@Getter
 public class PgPlanVirtualFile extends LightVirtualFile {
     //did we actually run the query with analyze
     private final boolean executed;
 
-    public PgPlanVirtualFile(@NlsSafe @NotNull String name, @NotNull String planText, boolean executed) {
+    private final UUID explainId = UUID.randomUUID();
+
+    //console that executed this explain query
+    private final JdbcConsole console;
+
+    private final String query;
+
+    public PgPlanVirtualFile(@NotNull String name, @NotNull String planText, boolean executed, JdbcConsole console, String query) {
         super(name, PgPlanFileType.INSTANCE, planText);
         this.executed = executed;
-    }
-
-    public boolean isExecuted() {
-        return executed;
+        this.console = console;
+        this.query = query;
     }
 }
