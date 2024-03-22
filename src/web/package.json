@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "pev2": "^1.7.0",
+    "pev2": "^1.10.0",
     "vue": "^3.2.45"
   },
   "devDependencies": {
